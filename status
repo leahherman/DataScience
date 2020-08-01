@@ -1,0 +1,55 @@
+[33mcommit e8ff99eae8ee472edb3f87561bf2bc0401e6da74[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: leahherman <leah.hermann@gmail.com>
+Date:   Sat Aug 1 21:29:55 2020 +0300
+
+    exercise 2 in python
+
+[33mcommit 636c3623520c9a600eb3aa831a104b3de0574c67[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: leahherman <leah.hermann@gmail.com>
+Date:   Sun Jul 26 13:57:08 2020 +0300
+
+    first python exercise
+
+[33mcommit f7bb1b78aae239ac1d843af082ec1d58695c26bb[m
+Merge: 2fa2eb7 dc14689
+Author: leahherman <leah.hermann@gmail.com>
+Date:   Sun Jul 26 08:59:14 2020 +0300
+
+    Merge branch 'master' of https://github.com/leahherman/DataScience
+
+[33mcommit 2fa2eb7ba2ad0796c46b3ca9dadd3532bc9608ac[m
+Author: leahherman <leah.hermann@gmail.com>
+Date:   Sun Jul 26 08:34:07 2020 +0300
+
+    SQL Exercise
+
+[33mcommit dc146893f31ce7d4019909da0534bd517f7586fd[m
+Author: leahherman <leah.hermann@gmail.com>
+Date:   Sat Jul 25 23:41:01 2020 +0300
+
+    init repository DataScience
+
+[33mcommit d7831dba0cf447e2f03b5fdcd14f6a2bc4c5c6c9[m
+Merge: f7237e6 4cc8625
+Author: “Tomas <“karpati@it4biotech.com”>
+Date:   Wed Mar 4 14:44:11 2020 +0200
+
+    Merge branch 'master' of https://github.com/karpatit/DataScience
+
+[33mcommit f7237e6369b450fc5e398294e25c98ead9c25d65[m
+Author: “Tomas <“karpati@it4biotech.com”>
+Date:   Wed Mar 4 14:43:44 2020 +0200
+
+    V0.1.5-updated for pip upload
+
+[33mcommit 4cc86251359e8f9a5493abe7327f758bc5035331[m
+Author: “Tomas <“karpati@it4biotech.com”>
+Date:   Wed Oct 2 20:27:50 2019 +0300
+
+    Third Commit
+
+[33mcommit 7813f200c058d2d3bb4668e7257ff8b4c1e02407[m
+Author: “Tomas <“karpati@it4biotech.com”>
+Date:   Wed Oct 2 20:20:16 2019 +0300
+
+    secomd  Commit
