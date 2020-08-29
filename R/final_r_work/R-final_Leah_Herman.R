@@ -20,8 +20,7 @@ departments <- dbGetQuery(con, "SELECT * FROM Departments$")
 
 #DBI::dbDisconnect(con)
 print(departments)
-data(departments)
-view(departments)
+#iew(departments)
 ###Questions
 ### Q1. Count the number of students on each department
 
@@ -351,12 +350,7 @@ dfSof10 <- inner_join(  dfResult1 , dfR , by ="StudentId" )
 print(dfSof10)
 
 dfResult <-  unique( dfSof10 %>% select (StudentId,FirstName ,LastName,coursesNum  ,Englishmean , Sciencemean, , Artsmean , Sportmean , GenMean))
-options(digits = 4)
-col_names_vec = c( "coursesNum" ,"Englishmean" , "Sciencemean" , "Artsmean" , "Sportmean"  ,  "GenMean")
-dfResult[,col_names_vec] % replace(.,is.na(.),0
-
-
-
-
+#options(digits = 5)
+dfResult[is.na(dfResult)]  = 0
 print(dfResult)
 
