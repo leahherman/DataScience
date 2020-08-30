@@ -18,6 +18,9 @@ courses   <- dbGetQuery(con, "SELECT * FROM Courses$")
 classrooms <- dbGetQuery(con, "SELECT * FROM Classrooms$")
 departments <- dbGetQuery(con, "SELECT * FROM Departments$")
 
+
+options(max.print=999999)
+
 #DBI::dbDisconnect(con)
 print(departments)
 #iew(departments)
@@ -249,8 +252,8 @@ merged_df <- inner_join(classrooms, courses, by="CourseId")
 df <- inner_join(merged_df, teachers, by="TeacherId")
 dfAllData  <- df
 dfTeachers  <-   unique (dfAllData %>% select(TeacherId , FirstName , LastName, degree ))
-dfTeach <-dfTeachers %>% group_by(Teacher = FirstName +" "+LastName) %>% summarise(avgDegree = mean(degree))
-dfResul = arrange(dfTeach , desc(avgDegree) )
+dfTeach <-dfTeachers %>% group_by( FirstName ,LastName) %>% summarise(avgDegree = mean(degree))
+dfResul <- arrange(dfTeach , desc(avgDegree) )
 
 dfResul$Teacher  <- paste(dfResul$FirstName," ",dfResul$LastName)
 
@@ -284,8 +287,11 @@ print(dfResul)
 ###Q10. Create a dataframe showing the students, the number of courses they take, the average of the grades per class, and their overall average (for each student show the student name).
 
 # view 10
-  
+
 dfClsCourseData <- left_join( classrooms ,courses ,  by = "CourseId")
+dfStd = inner_join(students,dfClsCourseData , by="StudentId")
+dfNumCourses <- dfStd %>% select(StudentId) %>% group_by(StudentId)%>% summarise(numCourses = n())
+tail(dfNumCourses, 10)
 
 dfStdClsCourseData = left_join(students,dfClsCourseData , by="StudentId")
 dfStdClsCourseData1 <- rename( dfStdClsCourseData ,DepartmentId =DepartmentID)
@@ -293,7 +299,8 @@ dfStdClsCourseData1 <- rename( dfStdClsCourseData ,DepartmentId =DepartmentID)
 dfStdClsCourseDeptData <-  inner_join(departments,dfStdClsCourseData1 , by="DepartmentId" )
 dfStdDeptDegree <-  dfStdClsCourseDeptData %>% select (StudentId , DepartmentName ,degree )
 classrommList <-  unique (dfStdClsCourseData1 %>% select (StudentId ,FirstName , LastName,CourseId  , degree,DepartmentId))  
-dfResult <-  classrommList%>% group_by(StudentId ,FirstName, LastName ,DepartmentId) %>% summarise(numCourses= n())
+dfResult <-  classrommList%>% group_by(StudentId ,FirstName, LastName ,DepartmentId)
+
 dfResult1 <- arrange(dfResult ,StudentId ,FirstName)
 
 dfMeanStdDeptDegree <-  dfStdDeptDegree%>% group_by(StudentId, DepartmentName )%>% summarize(avgDegree = mean(degree))
@@ -306,51 +313,50 @@ head(dfMeanStdDeptDegree)
 i=0
 
 for (line1 in departments$DepartmentName)  {
-   i<- i+1
-   df11 <- data.frame()
-   df11 <-  dfMeanStdDeptDegree%>%filter(DepartmentName == line1 )
-   dfIter  <- data.frame(   df11%>% select(StudentId ,  avgDegree))
-
-   #dfxx <-rename(dfIter , get(paste0(line1 ,"mean"))= avgDegree)
-   if (i==1){
-     df <-rename(dfIter , Englishmean= avgDegree)
-     
-      df1 <- full_join(dfStdGeneral , df  ,by="StudentId" )
+  i<- i+1
+  df11 <- data.frame()
+  df11 <-  dfMeanStdDeptDegree%>%filter(DepartmentName == line1 )
+  dfIter  <- data.frame(   df11%>% select(StudentId ,  avgDegree))
+  
+  #dfxx <-rename(dfIter , get(paste0(line1 ,"mean"))= avgDegree)
+  if (i==1){
+    df <-rename(dfIter , Englishmean= avgDegree)
+    
+    df1 <- full_join(dfStdGeneral , df  ,by="StudentId" )
     
   }
   else if (i==2){
     df22 <-rename(dfIter , Sciencemean= avgDegree)
     
     df2 <-  full_join(df1 , df22   ,by="StudentId" )
-  
-  
+    
+    
   }
-    else if (i == 3){
-      df33 <-rename(dfIter , Artsmean= avgDegree)
-      
-      df3 <-  full_join(df2 , df33   ,by="StudentId"   )
-      
-      
+  else if (i == 3){
+    df33 <-rename(dfIter , Artsmean= avgDegree)
+    
+    df3 <-  full_join(df2 , df33   ,by="StudentId"   )
+    
+    
   }
-    else {
-      df44 <-rename(dfIter , Sportmean= avgDegree)
-      
-     df4 <-  full_join(df3 , df44  ,by="StudentId" )
+  else {
+    df44 <-rename(dfIter , Sportmean= avgDegree)
+    
+    df4 <-  full_join(df3 , df44  ,by="StudentId" )
   }
 }
-print(df4)
+tail(df4 , 10)
+dfAllCols  <- inner_join(dfNumCourses , df4 , by="StudentId")
+dfChStd <- students%>%select(StudentId , FirstName , LastName)
+dfAllRows <-  left_join( dfChStd  , dfAllCols , by="StudentId")
+dfr <- dfAllRows%>% arrange(StudentId)
+tail(dfr  , 10)
 
-print(dfResult1)
+print(dfr)
 
-dfff  <-  dfResult1 %>% group_by(StudentId)  %>% summarise(coursesNum = sum(numCourses)) %>% select(StudentId , coursesNum)
-print(dfff)                                                          
-dfR  <-  full_join(dfff%>% select(StudentId , coursesNum) , df4 , by="StudentId")
 
-dfSof10 <- inner_join(  dfResult1 , dfR , by ="StudentId" )
-print(dfSof10)
 
-dfResult <-  unique( dfSof10 %>% select (StudentId,FirstName ,LastName,coursesNum  ,Englishmean , Sciencemean, , Artsmean , Sportmean , GenMean))
-#options(digits = 5)
-dfResult[is.na(dfResult)]  = 0
-print(dfResult)
+
+
+
 
